@@ -16,8 +16,8 @@ class ExpensesApp extends StatelessWidget {
     final ThemeData tema = ThemeData();
 
     return MaterialApp(
-      home: const MyHomePage(),
-      theme: tema.copyWith(
+      home: MyHomePage(),
+      theme: ThemeData.from(colorScheme: ColorScheme.light()).copyWith(
         colorScheme: tema.colorScheme.copyWith(
           primary: Colors.purple,
           secondary: Colors.amber,
@@ -74,6 +74,18 @@ class _MyHomePageState extends State<MyHomePage> {
       date: DateTime.now().subtract(
         const Duration(days: 4),
       ),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Cartão de Crédito',
+      value: 100211.30,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't4',
+      title: 'Lanche',
+      value: 11.30,
+      date: DateTime.now(),
     ),
   ];
 
