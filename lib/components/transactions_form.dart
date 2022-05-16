@@ -1,5 +1,8 @@
+import 'package:expenses/components/adaptative_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'adaptative_button.dart';
+import 'adaptative_textfield.dart';
 
 class TransactionForm extends StatefulWidget {
   final void Function(String, double, DateTime) onSubmit;
@@ -49,66 +52,63 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: _titleController,
-              onSubmitted: (_) => _submitForm(),
-              decoration: const InputDecoration(
-                labelText: 'Título',
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: 10,
+            right: 10,
+            left: 10,
+            bottom: 10 + MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Column(
+            children: <Widget>[
+              AdaptativeTextField(
+                label: 'Título',
+                controller: _titleController,
+                onSubmitted: (_) => _submitForm(),
               ),
-            ),
-            TextField(
-              controller: _valueController,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              onSubmitted: (_) => _submitForm(),
-              decoration: const InputDecoration(
-                labelText: 'Valor (R\$)',
+              AdaptativeTextField(
+                label: 'Valor (R\$)',
+                controller: _valueController,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                onSubmitted: (_) => _submitForm(),
               ),
-            ),
-            Container(
-              height: 70,
-              child: Row(
+              Container(
+                height: 70,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        _selectedDate == null
+                            ? 'Nenhuma data Selecionada'
+                            : 'Data Selecionada:${DateFormat('dd/MM/y').format(_selectedDate!)}',
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: _showDatePicker,
+                      child: const Text(
+                        'Selecionar Data',
+                        style: TextStyle(
+                            color: Colors.purple, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      _selectedDate == null
-                          ? 'Nenhuma data Selecionada'
-                          : 'Data Selecionada:${DateFormat('dd/MM/y').format(_selectedDate!)}',
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: _showDatePicker,
-                    child: const Text(
-                      'Selecionar Data',
-                      style: TextStyle(
-                          color: Colors.purple, fontWeight: FontWeight.bold),
-                    ),
+                  AdaptativeButton(
+                    label: 'Nova Transação',
+                    onPressed: _submitForm,
                   ),
                 ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).primaryColor, // background
-                    onPrimary: Colors.white, // foreground
-                  ),
-                  child: const Text(
-                    'Nova Transação',
-                  ),
-                  onPressed: _submitForm,
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
